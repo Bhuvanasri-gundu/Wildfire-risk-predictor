@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Weather Index Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Fire Weather Index (FWI) Prediction System</h1>
+        </header>
+
+        <div class="content-wrapper">
+            <div class="form-section">
+                <h2>Enter Weather Parameters</h2>
+                <form method="POST" action="/">
+                    <div class="form-group">
+                        <label for="temperature">Temperature (°C)</label>
+                        <input type="number" step="0.1" id="temperature" name="temperature" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dew_point">Dew Point Temperature (°C)</label>
+                        <input type="number" step="0.1" id="dew_point" name="dew_point" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rh">Relative Humidity (%)</label>
+                        <input type="number" step="0.1" id="rh" name="rh" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ws">Wind Speed (km/h)</label>
+                        <input type="number" step="0.1" id="ws" name="ws" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pressure">Atmospheric Pressure (hPa)</label>
+                        <input type="number" step="0.1" id="pressure" name="pressure" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="precipitation">Precipitation (mm)</label>
+                        <input type="number" step="0.1" id="precipitation" name="precipitation" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rain_days">Rain Days</label>
+                        <input type="number" step="0.1" id="rain_days" name="rain_days" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ffmc">Fine Fuel Moisture Code (FFMC)</label>
+                        <input type="number" step="0.1" id="ffmc" name="ffmc" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dmc">Duff Moisture Code (DMC)</label>
+                        <input type="number" step="0.1" id="dmc" name="dmc" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dc">Drought Code (DC)</label>
+                        <input type="number" step="0.1" id="dc" name="dc" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bui">Buildup Index (BUI)</label>
+                        <input type="number" step="0.1" id="bui" name="bui" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="isi">Initial Spread Index (ISI)</label>
+                        <input type="number" step="0.1" id="isi" name="isi" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <select id="country" name="country" required>
+                            <option value="">Select a country</option>
+                            <option value="Canada">Canada</option>
+                            <option value="France">France</option>
+                            <option value="Spain">Spain</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="United States">United States</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Predict FWI and Risk Level</button>
+                </form>
+            </div>
+
+            {% if prediction is not none %}
+            <div class="result-section">
+                <h2>🔥 Prediction Results</h2>
+                
+                <div class="result-highlight">
+                    <div class="fwi-display">
+                        <div class="fwi-label">Fire Weather Index</div>
+                        <div class="fwi-number">{{ prediction }}</div>
+                    </div>
+                    <div class="risk-display">
+                        <div class="risk-label">Risk Level</div>
+                        <div class="risk-value" style="background-color: {{ risk_color }};">
+                            {{ risk_level }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="risk-scale">
+                    <h3>📊 Risk Level Reference Guide</h3>
+                    <div class="scale-grid">
+                        <div class="scale-item">
+                            <div class="scale-header">
+                                <span class="scale-badge" style="background-color: #90EE90;">Low</span>
+                            </div>
+                            <span class="scale-range">FWI ≤ 5</span>
+                        </div>
+                        <div class="scale-item">
+                            <div class="scale-header">
+                                <span class="scale-badge" style="background-color: #2196F3;">Moderate</span>
+                            </div>
+                            <span class="scale-range">5 < FWI ≤ 12</span>
+                        </div>
+                        <div class="scale-item">
+                            <div class="scale-header">
+                                <span class="scale-badge" style="background-color: #FFA500;">High</span>
+                            </div>
+                            <span class="scale-range">12 < FWI ≤ 20</span>
+                        </div>
+                        <div class="scale-item">
+                            <div class="scale-header">
+                                <span class="scale-badge" style="background-color: #FF6347;">Very High</span>
+                            </div>
+                            <span class="scale-range">20 < FWI ≤ 30</span>
+                        </div>
+                        <div class="scale-item">
+                            <div class="scale-header">
+                                <span class="scale-badge" style="background-color: #DC143C;">Extreme</span>
+                            </div>
+                            <span class="scale-range">FWI > 30</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
